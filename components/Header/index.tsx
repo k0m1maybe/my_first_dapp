@@ -7,14 +7,14 @@ type HProps = {
     isLoggingOut: boolean;
 }
 
-const index: FC<HProps> = ({user, logout, isLoggingOut}) => {
+const Index: FC<HProps> = ({user, logout, isLoggingOut}) => {
   return (
     <>
         <p>Dashboard</p>
-        <p>{user.getUsername()}</p>
+        <p>Username: {user.getUsername()}</p>
         <button onClick={logout} disabled={isLoggingOut}>Logout</button>
     </>
   )
 }
 
-export default index
+export default Index

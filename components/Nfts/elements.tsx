@@ -7,7 +7,5 @@ type NFTIProps = {
 }
 
 export const NFTImage: FC<NFTIProps> = ({ image }) => {
-    return <NFTImageContainer>
-        <Image loader={()=>image} src="/.jpg" width={"100px"} height={"100px"}/>
-    </NFTImageContainer>
+    return <Image loader={()=>image} src="/.jpg" width={"100px"} height={"100px"}/>
 };

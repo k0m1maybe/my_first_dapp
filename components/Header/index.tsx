@@ -10,9 +10,11 @@ type HProps = {
 const Index: FC<HProps> = ({user, logout, isLoggingOut}) => {
   return (
     <>
-        <p>Dashboard</p>
-        <p>Username: {user.getUsername()}</p>
+        <>Dashboard </>
         <button onClick={logout} disabled={isLoggingOut}>Logout</button>
+        <p>Username: {user.getUsername()}</p>
+        <p>Adrress: {user.get("ethAddress")}</p>
+
     </>
   )
 }

@@ -13,7 +13,7 @@ const Index: FC<NFTProps> = ({ user }) => {
   let addressName: string = user!.get("ethAddress");
   const options = {
     chain: chainName,
-    address: '0x7c0Fb55E28979fd30168D0E7b94A525C063dBaed'
+    address: addressName //'0x7c0Fb55E28979fd30168D0E7b94A525C063dBaed'
   };
 
   const [nfts, setNfts] = useState(['']);
@@ -42,7 +42,7 @@ const Index: FC<NFTProps> = ({ user }) => {
   }
 
   return (<>
-    <p>NFTs start</p>
+    <p>NFTs</p>
     {
       nfts.map((image, key) => {
         return (
@@ -50,7 +50,6 @@ const Index: FC<NFTProps> = ({ user }) => {
         )
       })
     }
-    <p>NFTs end</p>
   </>)
 }
 

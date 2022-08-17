@@ -2,7 +2,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useMoralis } from 'react-moralis'
 import Header from '../components/Header'
-import Nfts from '../components/NFTs'
+import NFTs from '../components/NFTs'
 
 
 const Home: NextPage = () => {
@@ -19,7 +19,7 @@ const Home: NextPage = () => {
   return (
     <>
       <Header user={user!} logout={logout!} isLoggingOut={isLoggingOut!} />
-      <Nfts user={user!} />
+      <NFTs user={user!} />
     </>
   )
 }

@@ -1,7 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useMoralisWeb3Api } from 'react-moralis';
 import Moralis from 'moralis';
-import { NFTFilter, NFTImage, NFTDashboard } from './elements';
+import { NFTImage } from './elements';
+// import { NFTFilter, NFTDashboard } from './elements';
 
 type NFTProps = {
   user: Moralis.User<Moralis.Attributes>;

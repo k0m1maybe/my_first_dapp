@@ -1,8 +1,8 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useMoralis } from 'react-moralis'
-import Header from '../components/Header'
 import NFTs from '../components/NFTs'
+import Header from '../components/Header'
 
 
 const Home: NextPage = () => {

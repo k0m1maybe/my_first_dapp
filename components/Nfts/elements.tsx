@@ -9,29 +9,24 @@ type NFTIProps = {
 }
 
 export const NFTImage: FC<NFTIProps> = ({ image }) => {
-    return <Image loader={() => image} src="/.jpg" width={"100px"} height={"100px"} alt="" />
+    return <Image loader={() => image} src="/.jpg" width={"200px"} height={"200px"} alt="" />
 };
 
-// type NFTFProps = {
-//     setChain: React.Dispatch<React.SetStateAction<string>>;
-//     setMarketplace: React.Dispatch<React.SetStateAction<string>>
-// }
+type NFTFProps = {
+    setChain: React.Dispatch<React.SetStateAction<string>>;
+}
 
-// export const NFTFilter: FC<NFTFProps> = ({ setChain, setMarketplace }) => {
-//     return <NFTFilterContainer>
-//         <select onChange={(e) => { setChain(e.target.value) }} name={"chain"} id={"chain"}>
-//             <option selected={true} value={"polygon"}>Poly</option>
-//             <option value={"ethereum"}>ETH</option>
-//             <option value={"All"}>All</option>
-//         </select>
-//         <select onChange={(e) => { setMarketplace(e.target.value) }} name={"marketplace"} id={"chain"}>
-//             <option selected={true} value={"opensea"}>opensea</option>
-//             <option value={"rarible"}>rarible</option>
-//             <option value={"All"}>All</option>
-//         </select>
-
-//     </NFTFilterContainer>
-// }
+export const NFTFilter: FC<NFTFProps> = ({ setChain }) => {
+    return <NFTFilterContainer>
+        <select defaultValue={"polygon"} onChange={(e) => { setChain(e.target.value) }} name={"chain"} id={"chain"}>
+            <option value={"polygon"}>Poly</option>
+            <option value={"ethereum"}>ETH</option>
+            <option value={"mumbai"}>Mumbai</option>
+            <option value={"rinkeby"}>Rinkeby</option>
+            <option value={"all"}>All</option>
+        </select>
+    </NFTFilterContainer>
+}
 
 // type NFTDBProps = {
 //     chain: string;

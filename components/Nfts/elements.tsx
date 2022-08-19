@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import Image from "next/image";
-import { NFTImageContainer, NFTFilterContainer } from "./styles";
+import { NFTImageContainer, NFTFilterContainer, NFTContainer, NFTTextContainer, NameContainer, DiscriptionContainer } from "./styles";
 import Moralis from 'moralis';
 
 
@@ -9,7 +9,10 @@ type NFTIProps = {
 }
 
 export const NFTImage: FC<NFTIProps> = ({ image }) => {
-    return <Image loader={() => image} src="/.jpg" width={"200px"} height={"200px"} alt="" />
+    return <NFTImageContainer>
+        <Image loader={() => image} src="/.jpg" width={"300px"} height={"300px"} alt="" />
+    </NFTImageContainer>
+
 };
 
 type NFTFProps = {
@@ -62,7 +65,7 @@ export const NFTFilter: FC<NFTFProps> = ({ setChain }) => {
 //                     setRariblePolygonNFTs((l) => [...l, e.meta.content[0].url])
 //                 }
 //             }
-            
+
 //         })
 //         console.log(raribleEthereumNFTs)
 //         console.log(rariblePolygonNFTs)
@@ -97,3 +100,29 @@ export const NFTFilter: FC<NFTFProps> = ({ setChain }) => {
 //         }
 //     </>
 // }
+
+type NFTProps = {
+    image: string;
+    name: string;
+    description: string
+}
+
+export const NFT: FC<NFTProps> = ({ image, name, description }) => {
+    return <NFTContainer>
+        <NFTText name={name} description={description} />
+        <NFTImage image={image} />
+    </NFTContainer>
+}
+
+type NFTTProps = {
+    name: string;
+    description: string
+}
+
+export const NFTText: FC<NFTTProps> = ({ name, description }) => {
+    return <NFTTextContainer>
+        <NameContainer>{name}</NameContainer>
+        <br />
+        <DiscriptionContainer>{description}</DiscriptionContainer>
+    </NFTTextContainer>;
+};

@@ -1,7 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useMoralisWeb3Api } from 'react-moralis';
 import Moralis from 'moralis';
-import { NFTImage, NFTFilter } from './elements';
+import { NFTImage, NFTFilter, NFT } from './elements';
+import { NFTDashboardContainer } from './styles';
 // import { NFTDashboard } from './elements';
 
 type NFTProps = {
@@ -14,16 +15,16 @@ const Index: FC<NFTProps> = ({ user }) => {
 
   const Web3Api = useMoralisWeb3Api();
   let chainName: 'eth' | 'polygon' | 'mumbai' | 'rinkeby' = 'rinkeby';
-  let addressName = "0x7c0Fb55E28979fd30168D0E7b94A525C063dBaed";
+  let addressName = address
   const options = {
     chain: chainName,
-    address: "0x81A435096772424E18404532d82A7f35bb91c5F9"
+    address: "0x81A435096772424E18404532d82A7f35bb91c5F9" //"0x7c0Fb55E28979fd30168D0E7b94A525C063dBaed"
   };
 
-  const [nftspolygon, setNftspolygon] = useState(['']);
-  const [nftseth, setNftseth] = useState(['']);
-  const [nftsmumbai, setNftsmumbai] = useState(['']);
-  const [nftsrinkeby, setNftsrinkeby] = useState(['']);
+  const [nftspolygon, setNftspolygon] = useState([['', '', '']]);
+  const [nftseth, setNftseth] = useState([['', '', '']]);
+  const [nftsmumbai, setNftsmumbai] = useState([['', '', '']]);
+  const [nftsrinkeby, setNftsrinkeby] = useState([['', '', '']]);
 
   useEffect(() => {
     fetchNFTs();
@@ -40,125 +41,101 @@ const Index: FC<NFTProps> = ({ user }) => {
     console.log(rinkebyNFTs)
     const roughURLs = await Promise.all(
       (polygonNFTs.result)?.map(async (e, key) => {
-        const k = key;
-        let url: string = e.metadata!;
         // const params = { theUrl: url }
         // const nft = await Moralis.Cloud.run("fetchJSON", params);
+        const k = key;
+        let url: string = e.metadata!;
         if (url != null) {
-          return JSON.parse(url!.replaceAll(" ", "")).image
+          const metadata = JSON.parse(url!.replaceAll(" //", "//"))
+          return [metadata.image, metadata.name, metadata.description]
         }
-        return null
+        return [null]
       })!);
-    console.log(roughURLs)
     setNftspolygon(roughURLs)
     const rough2URLs = await Promise.all(
       (ethNFTs.result)?.map(async (e, key) => {
         const k = key;
         let url: string = e.metadata!;
         if (url != null) {
-          return JSON.parse(url!.replaceAll(" ", "")).image
+          const metadata = JSON.parse(url!.replaceAll(" //", "//"))
+          return [metadata.image, metadata.name, metadata.description]
         }
-        return null
+        return [null]
       })!);
-    console.log(rough2URLs)
     setNftseth(rough2URLs)
     const rough3URLs = await Promise.all(
       (mumbaiNFTs.result)?.map(async (e, key) => {
         const k = key;
         let url: string = e.metadata!;
         if (url != null) {
-          return JSON.parse(url!.replaceAll(" ", "")).image
+          const metadata = JSON.parse(url!.replaceAll(" //", "//"))
+          return [metadata.image, metadata.name, metadata.description]
         }
-        return null
+        return [null]
       })!);
-    console.log(rough3URLs)
     setNftsmumbai(rough3URLs)
     const rough4URLs = await Promise.all(
       (rinkebyNFTs.result)?.map(async (e, key) => {
         const k = key;
         let url: string = e.metadata!;
         if (url != null) {
-          return JSON.parse(url!.replaceAll(" ", "")).image
+          const metadata = JSON.parse(url!.replaceAll(" //", "//"))
+          return [metadata.image, metadata.name, metadata.description]
         }
-        return null
+        return [null]
       })!);
-    console.log(rough4URLs)
     setNftsrinkeby(rough4URLs)
-    // const fixedURLs = roughURLs.map((s, key) => {
-    //   const k = key;
-    //   if (s.startsWith('ipfs://')) {
-    //     return ("https://ipfs.io/ipfs/" + s.substr(7))
-    //   }
-    //   return s
-    // })
-    // setNfts(fixedURLs)
   }
-
-
-  // const [nftrarible, setNftrarible] = useState("");
-
-  // useEffect(() => { fetchNFTraribles() }, [])
-
-  // const fetchNFTraribles = async () => {
-  //   const nft = await Moralis.Cloud.run("fetchJSON", { theUrl: "https://api.rarible.org/v0.1/items/byOwner?owner=ETHEREUM:0x64fe09840b92ee36baa76a7b261c52f08a4ffec9" });
-  //   const nft2 = nft.data.items[30].meta.content[0].url
-  //   const nftlist = nft.data.items
-  //   console.log(nftlist)
-  //   console.log(nft2)
-  //   setNftrarible(nft2)
-  // }
 
   const [chain, setChain] = useState('polygon')
 
   return (<>
-    {/* 
-        <NFTDashboard chain={chain} marketplace={marketplace} address={address} />
-    <NFTImage image={nftrarible}></NFTImage> */}
     <p>NFTs</p>
     <NFTFilter setChain={setChain} />
     <p>NFTs on {chain}</p>
     <br />
-    {(chain === "all" || chain === "polygon") && nftspolygon!.map((e, key) => {
-      if (e !== null) {
-        if (e.startsWith('ipfs://')) {
-          return <NFTImage image={"https://ipfs.io/ipfs/" + e.substring(7)}></NFTImage>
+    <NFTDashboardContainer>
+      {(chain === "all" || chain === "polygon") && nftspolygon!.map((e, key) => {
+        if (e !== null) {
+          if (e[0]?.startsWith('ipfs://')) {
+            return <NFT key={key} image={"https://ipfs.io/ipfs/" + e[0].substring(7)} name={e[1]} description={e[2]}></NFT>
+          }
+          return (
+            <NFT key={key} image={e[0]} name={e[1]} description={e[2]} />
+          )
         }
-        return (
-          <NFTImage image={e}></NFTImage>
-        )
-      }
-    })}
-    {(chain === "all" || chain === "mumbai") && nftsmumbai!.map((e, key) => {
-      if (e !== null) {
-        if (e.startsWith('ipfs://')) {
-          return <NFTImage image={"https://ipfs.io/ipfs/" + e.substring(7)}></NFTImage>
+      })}
+      {(chain === "all" || chain === "mumbai") && nftsmumbai!.map((e, key) => {
+        if (e !== null) {
+          if (e[0]?.startsWith('ipfs://')) {
+            return <NFT key={key} image={"https://ipfs.io/ipfs/" + e[0].substring(7)} name={e[1]} description={e[2]}></NFT>
+          }
+          return (
+            <NFT key={key} image={e[0]} name={e[1]} description={e[2]} />
+          )
         }
-        return (
-          <NFTImage image={e}></NFTImage>
-        )
-      }
-    })}
-    {(chain === "all" || chain === "ethereum") && nftseth!.map((e, key) => {
-      if (e !== null) {
-        if (e.startsWith('ipfs://')) {
-          return <NFTImage image={"https://ipfs.io/ipfs/" + e.substring(7)}></NFTImage>
+      })}
+      {(chain === "all" || chain === "ethereum") && nftseth!.map((e, key) => {
+        if (e !== null) {
+          if (e[0]?.startsWith('ipfs://')) {
+            return <NFT key={key} image={"https://ipfs.io/ipfs/" + e[0].substring(7)} name={e[1]} description={e[2]}></NFT>
+          }
+          return (
+            <NFT key={key} image={e[0]} name={e[1]} description={e[2]} />
+          )
         }
-        return (
-          <NFTImage image={e}></NFTImage>
-        )
-      }
-    })}
-    {(chain === "all" || chain === "rinkeby") && nftsrinkeby!.map((e, key) => {
-      if (e !== null) {
-        if (e.startsWith('ipfs://')) {
-          return <NFTImage image={"https://ipfs.io/ipfs/" + e.substring(7)}></NFTImage>
+      })}
+      {(chain === "all" || chain === "rinkeby") && nftsrinkeby!.map((e, key) => {
+        if (e !== null) {
+          if (e[0]?.startsWith('ipfs://')) {
+            return <NFT key={key} image={"https://ipfs.io/ipfs/" + e[0].substring(7)} name={e[1]} description={e[2]} ></NFT>
+          }
+          return (
+            <NFT key={key} image={e[0]} name={e[1]} description={e[2]} />
+          )
         }
-        return (
-          <NFTImage image={e}></NFTImage>
-        )
-      }
-    })}
-
+      })}
+    </NFTDashboardContainer>
     {/* {
       nftsmoralis.map((image, key) => {
         return (
